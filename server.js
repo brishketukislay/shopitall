@@ -1,28 +1,14 @@
-import http from 'http';
-const PORT = process.env.PORT;
+const express = require('express');
+const app = express();
+// to parse PUT json 
+app.use(express.json());
 
-const server = http.createServer((req,res) =>{
-    try{
-        if(req.method === 'GET'){
-            if(req.url === '/'){
-                res.writeHead(200,{'Content-Type': 'text/html'});
-                res.end('<h1>homepage</h1>');
-            }
-            else if(req.url === '/about'){
-                res.writeHead(200, {'Content-Type': 'text/html'});
-                res.end('<h1>About</h1>');
-            }
-        }
-        else{
-            throw new Error('Method not allowed');
-        }
-    }
-    catch(error){
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('page not found');
-    }
-})
+// app.get('/',(req,res)=>{
+//     res.status(200).json({message:'home page'})
+// })
 
-server.listen(8000, ()=>{
-    console.log(`Server running on port ${PORT}`)
+app.use('/api/items', require('./routes/appRoutes'));
+
+app.listen(8000,()=>{
+    console.log('app working');
 })
